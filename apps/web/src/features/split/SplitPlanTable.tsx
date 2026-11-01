@@ -227,12 +227,12 @@ export function SplitPlanTable({ draft, result, readOnly, showErrors, onChange }
       style={highlight ? { ...rowStyle, background: 'var(--accent-a3)' } : { ...rowStyle, background: 'var(--gray-a2)' }}
     >
       <Box gridColumn={readOnly ? '1' : { initial: '1 / 3', sm: '1 / 4' }}>
-        <Text size="2" weight="bold" color={highlight ? 'indigo' : undefined} highContrast={highlight}>
+        <Text size="2" weight="bold" className={highlight ? 'text-accent' : undefined}>
           {label}
         </Text>
       </Box>
       <Box gridColumn={readOnly ? { initial: 'auto', sm: '4' } : 'auto'} style={{ textAlign: 'right' }}>
-        <Text size="2" weight="bold" color={highlight ? 'indigo' : undefined} highContrast={highlight}>
+        <Text size="2" weight="bold" className={highlight ? 'text-accent' : undefined}>
           <Money cents={valueCents} />
         </Text>
       </Box>
@@ -306,7 +306,7 @@ export function SplitPlanTable({ draft, result, readOnly, showErrors, onChange }
         'À garder sur le compte commun',
         result.keepOnJointCents,
         (person: DraftPerson) => (
-          <Text size="2" weight="bold" color="indigo" highContrast>
+          <Text size="2" weight="bold" className="text-accent">
             <Money cents={resultByPerson.get(person.id)?.contributionCents ?? 0} />
           </Text>
         ),

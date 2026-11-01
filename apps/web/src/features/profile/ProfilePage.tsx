@@ -26,7 +26,7 @@ export function ProfilePage() {
                   <Text size="5" weight="bold">
                     {user.name}
                   </Text>
-                  {user.isAdmin && <Badge color="indigo">Administrateur</Badge>}
+                  {user.isAdmin && <Badge>Administrateur</Badge>}
                 </Flex>
                 <Text as="div" size="2" color="gray" truncate>
                   {user.email}

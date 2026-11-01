@@ -7,8 +7,8 @@ import { ErrorCallout } from '../../components/ErrorCallout';
 import { spaceUrl } from '../../lib/space';
 import { ROLE_LABELS, useCreateSpace, useSpaces } from './api';
 
-/** Dropdown listing the user's spaces (with their role) + "new space". */
-export function SpaceSwitcher({ currentSpaceId }: { currentSpaceId: string | null }) {
+/** Dropdown listing the user's spaces (with their role) + "new space". `pill` is the compact trigger of the mobile header. */
+export function SpaceSwitcher({ currentSpaceId, variant = 'bar' }: { currentSpaceId: string | null; variant?: 'bar' | 'pill' }) {
   const spaces = useSpaces();
   const navigate = useNavigate();
   const [creating, setCreating] = useState<boolean>(false);
@@ -18,8 +18,17 @@ export function SpaceSwitcher({ currentSpaceId }: { currentSpaceId: string | nul
     <>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-          <Button variant="soft" color="gray" style={{ justifyContent: 'space-between', width: '100%' }}>
-            <Text truncate>{current?.name ?? 'Choisir un espace'}</Text>
+          <Button
+            variant="surface"
+            color="gray"
+            radius={variant === 'pill' ? 'full' : undefined}
+            aria-label={`Espace : ${current?.name ?? 'aucun'}. Changer d'espace`}
+            className="space-trigger"
+            data-variant={variant}
+          >
+            <Text truncate weight="bold" highContrast>
+              {current?.name ?? 'Choisir un espace'}
+            </Text>
             <CaretSortIcon />
           </Button>
         </DropdownMenu.Trigger>

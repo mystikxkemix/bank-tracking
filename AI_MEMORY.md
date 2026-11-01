@@ -34,3 +34,7 @@ Keep entries short and dated (YYYY-MM-DD).
 - 2026-11-01: Radix CSS variables work directly as Recharts `fill` / `stroke` (`var(--grass-9)`).
 - 2026-11-01: Radix `Text` takes margin props but not padding props.
 - 2026-11-01: Browser pane: always pass `tabId` inside `browser_batch` items (otherwise they act on the front tab). Drafts are reachable through Vite at `http://localhost:5173/@fs/<abs path>/design/drafts/index.html`. Two agents testing at once: use `http://localhost:5173` and `http://[::1]:5173` (separate cookie jars); `127.0.0.1` is not served by Vite here.
+- 2026-11-01: Radix `Box` `display` only accepts none / inline / inline-block / block / contents: for a responsive grid use an inner element. Never set `display` on such an element in `styles.css` (loaded after Radix, it overrides the responsive `md:none` classes).
+- 2026-11-01: Radix `Callout.Text` and `Text as="p"` render a `<p>`: no `Flex`/`Box` inside, use `<Flex asChild><span>`.
+- 2026-11-01: Vite mirrors browser console errors in the dev server log (`[vite] (client) [console.error]`, with the React component stack): grep it after UI changes.
+- 2026-11-01: Radix `Text` has no "accent" color value: use the `.text-accent` class (`var(--accent-11)`).

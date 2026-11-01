@@ -427,7 +427,7 @@ function ImportBanner({ record, remaining, accounts, backPath }: { record: Impor
               <Badge color="green">{plural(record.insertedCount, 'nouvelle', 'nouvelles')}</Badge>
               {record.duplicateCount > 0 && <Badge color="gray">{plural(record.duplicateCount, 'doublon ignoré', 'doublons ignorés')}</Badge>}
               {record.skippedCount > 0 && <Badge color="orange">{plural(record.skippedCount, 'ligne illisible', 'lignes illisibles')}</Badge>}
-              <Badge color="indigo">{plural(record.categorizedCount, 'classée par règle', 'classées par règle')}</Badge>
+              <Badge>{plural(record.categorizedCount, 'classée par règle', 'classées par règle')}</Badge>
               <Badge color="amber">{remaining} à revoir</Badge>
             </Flex>
           </Box>

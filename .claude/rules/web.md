@@ -18,7 +18,8 @@ paths:
 ## UI conventions
 - Radix Themes components and props first (`Flex`, `Grid`, `Card`, `Table`, `Dialog`, `gap`, `p`, `size`, `color`). Custom CSS only in `styles.css` with Radix tokens (`var(--gray-a5)`, `var(--space-3)`). No CSS framework, no inline hex colors.
 - Amounts: always `<Money cents=...>`; inputs: `<AmountField>`. Dates via `formatDay` / `formatMonth`.
-- Selected month in the URL: `useMonthParam()` + `<MonthPicker>`.
+- Selected month in the URL: `useMonthParam()` + `<MonthHeader>` on monthly pages (D2 big month title + today chip; `MonthPicker` is its inner control).
+- Shell (D2): top navigation bar on desktop, compact header + bottom tab bar on mobile, built from `app/nav.ts`. Sticky elements use `var(--app-background)`. Headline figures use `<HeroStrip>`, accent text uses the `.text-accent` class.
 - Every list/page handles: loading (Skeleton), empty (`<EmptyState>` with the next action), error (`<ErrorCallout>`), **viewer read-only** (`useCurrentSpace().canEdit` false: hide create/edit/delete controls, never show a control that will 403).
 - Destructive actions: `<ConfirmDialog>` stating consequences.
 - Responsive: usable at 375px. Tables that do not fit become stacked cards on mobile (`display={{ initial: 'none', sm: 'block' }}`).
