@@ -5,8 +5,7 @@ import type { SplitMonth, SplitResult } from '@bank/shared';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
 import { EmptyState } from '../../components/EmptyState';
 import { ErrorCallout } from '../../components/ErrorCallout';
-import { MonthPicker } from '../../components/MonthPicker';
-import { PageHeader } from '../../components/PageHeader';
+import { MonthHeader } from '../../components/MonthHeader';
 import { formatMonth } from '../../lib/format';
 import { useCurrentSpace } from '../../lib/space';
 import { useMonthParam } from '../../lib/useMonthParam';
@@ -77,10 +76,11 @@ export function SplitPage() {
   };
 
   const header: ReactNode = (
-    <PageHeader
+    <MonthHeader
       title="Répartition du foyer"
       description="Ce qui reste sur le compte commun et ce que chacun récupère, mois par mois."
-      actions={<MonthPicker month={month} onChange={requestMonth} />}
+      month={month}
+      onChange={requestMonth}
     />
   );
 
@@ -230,7 +230,8 @@ function StatusBar({ data, canEdit, dirty, saving, onSave, onReset, onDelete, is
 
   const needsSave: boolean = dirty || !data.saved;
   let icon: ReactNode = <CheckIcon />;
-  let color: 'amber' | 'indigo' | 'gray' = 'gray';
+  // undefined = accent color.
+  let color: 'amber' | 'gray' | undefined = 'gray';
   let message: ReactNode;
   if (dirty) {
     icon = <InfoCircledIcon />;
@@ -240,43 +241,46 @@ function StatusBar({ data, canEdit, dirty, saving, onSave, onReset, onDelete, is
       : `${capitalize(formatMonth(data.month))} n'est pas encore enregistré, le résultat est recalculé en direct.`;
   } else if (!data.saved) {
     icon = <CopyIcon />;
-    color = 'indigo';
+    color = undefined;
     message = copiedLabel ? `Pré-rempli depuis ${copiedLabel}, vérifie et enregistre.` : `${capitalize(formatMonth(data.month))} n'est pas encore enregistré.`;
   } else {
     message = data.updatedAt ? `Enregistré le ${savedAtFormatter.format(new Date(data.updatedAt))}.` : 'Enregistré.';
   }
 
   return (
-    <Box position={needsSave ? 'sticky' : 'static'} top="0" style={{ zIndex: 2, background: 'var(--color-background)' }} py={needsSave ? '2' : '0'}>
+    <Box position={needsSave ? 'sticky' : 'static'} top="0" style={{ zIndex: 2, background: 'var(--app-background, var(--color-background))' }} py={needsSave ? '2' : '0'}>
       <Callout.Root color={color} size="1">
         <Callout.Icon>{icon}</Callout.Icon>
         <Flex asChild justify="between" align="center" gap="3" wrap="wrap" width="100%">
           <Callout.Text>
             <span>{message}</span>
-            <Flex gap="2" align="center">
-              {dirty && (
-                <Button size="2" variant="soft" color="gray" onClick={onReset}>
-                  Annuler les modifications
-                </Button>
-              )}
-              {needsSave && (
-                <Button size="2" onClick={onSave} loading={saving}>
-                  <CheckIcon /> Enregistrer
-                </Button>
-              )}
-              {!needsSave && data.saved && (
-                <ConfirmDialog
-                  title={`Supprimer la répartition de ${formatMonth(data.month)} ?`}
-                  description="Le plan enregistré pour ce mois sera supprimé. Le mois redeviendra un brouillon pré-rempli depuis le dernier mois enregistré avant lui."
-                  confirmLabel="Supprimer"
-                  onConfirm={onDelete}
-                  trigger={
-                    <Button size="1" variant="ghost" color="red">
-                      <TrashIcon /> Supprimer ce mois
-                    </Button>
-                  }
-                />
-              )}
+            {/* A span, not a div: Callout.Text is a <p>. */}
+            <Flex asChild gap="2" align="center">
+              <span>
+                {dirty && (
+                  <Button size="2" variant="soft" color="gray" onClick={onReset}>
+                    Annuler les modifications
+                  </Button>
+                )}
+                {needsSave && (
+                  <Button size="2" onClick={onSave} loading={saving}>
+                    <CheckIcon /> Enregistrer
+                  </Button>
+                )}
+                {!needsSave && data.saved && (
+                  <ConfirmDialog
+                    title={`Supprimer la répartition de ${formatMonth(data.month)} ?`}
+                    description="Le plan enregistré pour ce mois sera supprimé. Le mois redeviendra un brouillon pré-rempli depuis le dernier mois enregistré avant lui."
+                    confirmLabel="Supprimer"
+                    onConfirm={onDelete}
+                    trigger={
+                      <Button size="1" variant="ghost" color="red">
+                        <TrashIcon /> Supprimer ce mois
+                      </Button>
+                    }
+                  />
+                )}
+              </span>
             </Flex>
           </Callout.Text>
         </Flex>

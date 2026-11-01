@@ -390,7 +390,7 @@ function Stepper({ steps, current, onSelect, canSelect }: { steps: { key: Step; 
                 style={{ background: 'none', border: 'none', padding: 0, font: 'inherit', color: 'inherit', cursor: clickable ? 'pointer' : 'default' }}
               >
                 <button type="button" disabled={!clickable} onClick={() => onSelect(item.key)}>
-                  <Badge size="2" radius="full" variant={active ? 'solid' : 'soft'} color={done || active ? 'indigo' : 'gray'} style={{ width: 26, height: 26, justifyContent: 'center' }}>
+                  <Badge size="2" radius="full" variant={active ? 'solid' : 'soft'} color={done || active ? undefined : 'gray'} style={{ width: 26, height: 26, justifyContent: 'center' }}>
                     {done ? <CheckIcon /> : index + 1}
                   </Badge>
                   <Text size="2" weight={active ? 'bold' : 'regular'} color={active ? undefined : 'gray'}>
@@ -473,7 +473,7 @@ function ImportHistory() {
                       {record.skippedCount} illisible{record.skippedCount > 1 ? 's' : ''}
                     </Badge>
                   )}
-                  <Badge color="indigo" size="1">
+                  <Badge size="1">
                     {record.categorizedCount} classée{record.categorizedCount > 1 ? 's' : ''} par règle
                   </Badge>
                 </Flex>

@@ -7,7 +7,7 @@ import { CategoryBadge } from '../../components/CategoryBadge';
 import { EmptyState } from '../../components/EmptyState';
 import { ErrorCallout } from '../../components/ErrorCallout';
 import { Money } from '../../components/Money';
-import { MonthPicker } from '../../components/MonthPicker';
+import { MonthHeader } from '../../components/MonthHeader';
 import { PageHeader } from '../../components/PageHeader';
 import { formatCents, formatDay, formatMonth, formatPercent } from '../../lib/format';
 import { spaceUrl, useCurrentSpace } from '../../lib/space';
@@ -39,20 +39,21 @@ export function DashboardPage() {
   const transactionCount: number = sumTransactions(accountList);
 
   const header: ReactNode = (
-    <PageHeader
+    <MonthHeader
       title="Tableau de bord"
-      description={space.name}
+      month={month}
+      onChange={setMonth}
       actions={
-        <>
-          <MonthPicker month={month} onChange={setMonth} />
-          {canEdit && (
-            <Button asChild>
+        // On desktop the top bar already has "Importer": only phones need this shortcut.
+        canEdit && (
+          <Box display={{ initial: 'block', md: 'none' }}>
+            <Button asChild variant="surface">
               <RouterLink to={spaceUrl(space.id, '/import')}>
                 <UploadIcon /> Importer un relevé
               </RouterLink>
             </Button>
-          )}
-        </>
+          </Box>
+        )
       }
     />
   );
@@ -439,7 +440,7 @@ function Onboarding({ hasAccount }: { hasAccount: boolean }) {
           {steps.map((step, index: number) => (
             <Card key={step.title} variant="surface" style={{ opacity: step.done ? 0.6 : 1 }}>
               <Flex align="center" gap="2" mb="1">
-                <Badge radius="full" color={step.done ? 'grass' : 'indigo'} variant={step.done ? 'soft' : 'solid'}>
+                <Badge radius="full" color={step.done ? 'grass' : undefined} variant={step.done ? 'soft' : 'solid'}>
                   {step.done ? '✓' : index + 1}
                 </Badge>
                 <Text weight="bold" size="2">

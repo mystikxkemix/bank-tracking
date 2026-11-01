@@ -28,7 +28,7 @@ Indexes: `{accountId, dedupKey}` unique, `{spaceId, date:-1}`, `{spaceId, catego
 ## UI
 - Review queue `/s/:spaceId/review?importId=` (design direction 3, see design/DECISION.md): uncategorized transactions of an import (or all uncategorized), one active row, one-click category, "Créer une règle" prefilled, banner with counts and "Annuler l'import".
 - List grouped by day, columns: date, label (+ account name if several accounts), category badge (click = category picker popover with search), amount `<Money colored>`.
-- Filters bar: MonthPicker (URL), account Select, category Select incl. "Non catégorisé", search field (debounced 300 ms). Filters in the URL.
+- Filters bar: MonthHeader (URL), account Select, category Select incl. "Non catégorisé", search field (debounced 300 ms). Filters in the URL.
 - Multi-select + "Catégoriser" bulk action. "Créer une règle" from a row (prefilled pattern).
 - Pagination ("Charger plus" or pages). Viewer: no edit controls.
 - Mobile: stacked rows (label + category on the left, amount right).

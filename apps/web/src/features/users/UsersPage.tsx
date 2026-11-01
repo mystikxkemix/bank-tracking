@@ -110,7 +110,7 @@ function UsersAdmin({ me }: { me: CurrentUser }) {
                       {isMe ? (
                         // Removing your own rights would lock you out of this page: another admin has to do it.
                         <Tooltip content="Un autre administrateur peut te retirer ce droit">
-                          <Badge color="indigo">Admin</Badge>
+                          <Badge>Admin</Badge>
                         </Tooltip>
                       ) : (
                         <Switch

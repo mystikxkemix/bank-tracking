@@ -7,8 +7,7 @@ import { CategoryPicker } from '../../components/CategoryPicker';
 import { EmptyState } from '../../components/EmptyState';
 import { ErrorCallout } from '../../components/ErrorCallout';
 import { Money } from '../../components/Money';
-import { MonthPicker } from '../../components/MonthPicker';
-import { PageHeader } from '../../components/PageHeader';
+import { MonthHeader } from '../../components/MonthHeader';
 import { formatMonth } from '../../lib/format';
 import { spaceUrl, useCurrentSpace } from '../../lib/space';
 import { useMonthParam } from '../../lib/useMonthParam';
@@ -140,17 +139,17 @@ export function TransactionsPage() {
 
   return (
     <>
-      <PageHeader
+      <MonthHeader
         title="Transactions"
+        month={month}
+        onChange={setMonth}
         actions={
-          <>
-            {canEdit && uncategorizedCount > 0 && (
-              <Button variant="soft" color="amber" asChild>
-                <RouterLink to={spaceUrl(space.id, '/review')}>À catégoriser ({uncategorizedCount})</RouterLink>
-              </Button>
-            )}
-            <MonthPicker month={month} onChange={setMonth} />
-          </>
+          canEdit &&
+          uncategorizedCount > 0 && (
+            <Button variant="soft" color="amber" asChild>
+              <RouterLink to={spaceUrl(space.id, '/review')}>À catégoriser ({uncategorizedCount})</RouterLink>
+            </Button>
+          )
         }
       />
 
