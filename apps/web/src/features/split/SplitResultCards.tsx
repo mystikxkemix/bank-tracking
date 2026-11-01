@@ -31,12 +31,12 @@ export function SplitResultCards({ result, persons }: { result: SplitResult; per
       <Card size="3" style={{ background: 'var(--accent-a3)', boxShadow: 'inset 0 0 0 1px var(--accent-a6)' }}>
         <Flex direction="column" gap="3" height="100%">
           <Flex justify="between" align="start" gap="2">
-            <Text size="2" weight="medium" color="indigo" highContrast>
+            <Text size="2" weight="medium" className="text-accent">
               <span aria-hidden="true">🏡</span> À garder sur le compte commun
             </Text>
             <CopyAmountButton cents={result.keepOnJointCents} label="à garder sur le compte commun" />
           </Flex>
-          <Text size="8" weight="bold" color="indigo" highContrast style={{ letterSpacing: '-0.02em' }}>
+          <Text size="8" weight="bold" className="text-accent" style={{ letterSpacing: '-0.03em' }}>
             <Money cents={result.keepOnJointCents} />
           </Text>
           <Flex direction="column" gap="1" mt="auto">

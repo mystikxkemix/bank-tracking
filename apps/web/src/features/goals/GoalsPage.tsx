@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react';
 import type { Goal } from '@bank/shared';
 import { EmptyState } from '../../components/EmptyState';
 import { ErrorCallout } from '../../components/ErrorCallout';
+import { HeroStrip } from '../../components/HeroStrip';
 import { Money } from '../../components/Money';
 import { PageHeader } from '../../components/PageHeader';
 import { useCurrentSpace } from '../../lib/space';
@@ -95,40 +96,17 @@ export function GoalsPage() {
     <>
       {header}
       <Flex direction="column" gap="5">
-        <Card size="3">
-          <Grid columns={{ initial: '1', sm: '3' }} gap="4">
-            <Box>
-              <Text as="div" size="2" color="gray">
-                Déjà mis de côté
-              </Text>
-              <Text as="div" size="8" weight="bold" style={{ letterSpacing: '-0.02em' }}>
-                <Money cents={savedCents} />
-              </Text>
-            </Box>
-            <Box>
-              <Text as="div" size="2" color="gray">
-                Reste à épargner
-              </Text>
-              <Text as="div" size="5" weight="bold">
-                <Money cents={remainingCents} />
-              </Text>
-              <Text as="div" size="1" color="gray">
-                sur {active.length} objectif{active.length > 1 ? 's' : ''} en cours
-              </Text>
-            </Box>
-            <Box>
-              <Text as="div" size="2" color="gray">
-                Effort mensuel
-              </Text>
-              <Text as="div" size="5" weight="bold">
-                {monthlyCents > 0 ? <Money cents={monthlyCents} /> : '-'}
-              </Text>
-              <Text as="div" size="1" color="gray">
-                pour tenir les échéances
-              </Text>
-            </Box>
-          </Grid>
-        </Card>
+        <HeroStrip
+          main={{ label: 'Déjà mis de côté', value: <Money cents={savedCents} /> }}
+          stats={[
+            {
+              label: 'Reste à épargner',
+              value: <Money cents={remainingCents} />,
+              sub: `sur ${active.length} objectif${active.length > 1 ? 's' : ''} en cours`,
+            },
+            { label: 'Effort mensuel', value: monthlyCents > 0 ? <Money cents={monthlyCents} /> : '-', sub: 'pour tenir les échéances' },
+          ]}
+        />
 
         {active.length > 0 && (
           <Grid columns={{ initial: '1', sm: '2', lg: '3' }} gap="4">

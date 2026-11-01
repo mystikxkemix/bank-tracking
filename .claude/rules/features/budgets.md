@@ -17,7 +17,7 @@ GET `/` -> `Budget[]`; PUT `/:categoryId` `PutBudgetBody` (upsert, category must
 Spent amounts come from `GET /stats/months/:month` (`budgets: BudgetStatus[]`), not from this endpoint.
 
 ## UI
-Budgets page with MonthPicker: one row per expense category: emoji + name, Progress bar (spent / limit, color: green < 80 %, amber < 100 %, red over), "X € restants" or "dépassé de X €", inline edit of the limit (AmountField). Categories without budget listed below with "Définir un budget". Total line. Viewer read-only.
+Budgets page with MonthHeader and HeroStrip: one row per expense category: emoji + name, Progress bar (spent / limit, color: accent teal < 80 %, amber < 100 %, red over), "X € restants" or "dépassé de X €", inline edit of the limit (AmountField). Categories without budget listed below with "Définir un budget". Total line. Viewer read-only.
 
 ## Status
 Contract + model done. API done (2026-11-01): `budgets/service.ts` + `routes.ts`. GET sorted by creation; PUT upsert returns the `Budget` (200), unknown category or category of another space 404, non-expense category 400 `category_not_expense`; DELETE 204, 404 when no budget. Smoke tested (upsert, 400, 403 viewer, 404 other space). Known gap: deleting a category does not delete its budget (categories feature).

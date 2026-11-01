@@ -140,7 +140,7 @@ export function CategoryPicker({ trigger, categories, value, onSelect, allowNone
                     {option.category ? option.category.name : 'Non catégorisé'}
                   </Text>
                   {(value ?? null) === option.id && (
-                    <Text color="indigo" aria-label="Catégorie actuelle">
+                    <Text className="text-accent" aria-label="Catégorie actuelle">
                       <CheckIcon />
                     </Text>
                   )}

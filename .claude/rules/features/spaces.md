@@ -36,7 +36,7 @@ Enforced in `requireSpace` (any non-GET needs editor) and `requireOwner`. Non-me
 
 ## UI
 - URLs `/s/:spaceId/...`; `SpaceRoute` checks membership and provides `useCurrentSpace()` (`space`, `canEdit`, `isOwner`). `/` redirects to the last used space (localStorage). Done.
-- `SpaceSwitcher` in the sidebar with role badges + "Nouvel espace" dialog. Done.
+- `SpaceSwitcher` in the top bar (`variant="bar"`, desktop) or mobile header (`variant="pill"`) with role badges + "Nouvel espace" dialog. Done.
 - Read-only banner in AppLayout for viewers. Done.
 - Settings > "Partage" tab (`MembersSection.tsx`): members list with role Select (owner only), add by email + role, remove (ConfirmDialog), roles explanation, "Quitter cet espace" (non-owners, or owners when another owner exists). Done.
 - Settings > "Espace" tab (`SpaceSettingsSection.tsx`): rename, delete (ConfirmDialog listing what is deleted, then navigate to `/`); non-owners see their role. Done.

@@ -1,5 +1,5 @@
 import { Cross2Icon, ExclamationTriangleIcon, PlusIcon, TrashIcon } from '@radix-ui/react-icons';
-import { Badge, Box, Button, Callout, Card, Flex, Grid, IconButton, Skeleton, Spinner, Table, Text } from '@radix-ui/themes';
+import { Badge, Box, Button, Callout, Card, Flex, IconButton, Skeleton, Spinner, Table, Text } from '@radix-ui/themes';
 import { useState, type FormEvent, type KeyboardEvent, type ReactNode } from 'react';
 import { Link } from 'react-router';
 import type { Budget, BudgetStatus, Category, CategoryTotal, MonthSummary } from '@bank/shared';
@@ -9,8 +9,8 @@ import { ConfirmDialog } from '../../components/ConfirmDialog';
 import { EmptyState } from '../../components/EmptyState';
 import { ErrorCallout } from '../../components/ErrorCallout';
 import { Money } from '../../components/Money';
-import { MonthPicker } from '../../components/MonthPicker';
-import { PageHeader } from '../../components/PageHeader';
+import { HeroStrip, type HeroStat } from '../../components/HeroStrip';
+import { MonthHeader } from '../../components/MonthHeader';
 import { formatMonth, formatPercent } from '../../lib/format';
 import { spaceUrl, useCurrentSpace } from '../../lib/space';
 import { useMonthParam } from '../../lib/useMonthParam';
@@ -18,7 +18,7 @@ import { useCategories } from '../categories/api';
 import { useMonthSummary } from '../dashboard/api';
 import { useDeleteBudget, usePutBudget, useBudgets } from './api';
 import { BUDGET_STATE_ORDER, BUDGET_STATES, BudgetBar, budgetState, type BudgetState } from './BudgetBar';
-import { monthProgress, type MonthProgress } from './monthProgress';
+import { monthProgress, type MonthProgress } from '../../lib/monthProgress';
 
 interface BudgetRow {
   category: Category;
@@ -114,11 +114,7 @@ export function BudgetsPage() {
   const progress: MonthProgress | null = monthProgress(month);
 
   const header: ReactNode = (
-    <PageHeader
-      title="Budgets"
-      description="Un plafond par catégorie de dépenses, le même chaque mois."
-      actions={<MonthPicker month={month} onChange={setMonth} />}
-    />
+    <MonthHeader title="Budgets" description="Un plafond par catégorie de dépenses, le même chaque mois." month={month} onChange={setMonth} />
   );
 
   if (budgets.isPending || categories.isPending) {
@@ -212,79 +208,58 @@ export function BudgetsPage() {
   );
 }
 
-function HeroStat({ label, children, sub }: { label: string; children: ReactNode; sub?: ReactNode }) {
-  return (
-    <Box>
-      <Text as="div" size="2" color="gray">
-        {label}
-      </Text>
-      <Text as="div" size="5" weight="bold">
-        {children}
-      </Text>
-      {sub && (
-        <Text as="div" size="1" color="gray">
-          {sub}
-        </Text>
-      )}
-    </Box>
-  );
-}
-
 /** "Reste à dépenser" first, then budgeted / spent / per day, and the month bar with the "today" tick. */
 function BudgetHero({ totals, budgetCount, progress, loading }: { totals: BudgetTotals; budgetCount: number; progress: MonthProgress | null; loading: boolean }) {
   const over: boolean = totals.leftCents < 0;
   const spentRatio: number | null = totals.limitCents > 0 ? totals.spentCents / totals.limitCents : null;
   const perDayCents: number | null = progress && !over ? Math.floor(totals.leftCents / progress.daysLeft) : null;
+  const stats: HeroStat[] = [
+    { label: 'Budgété', value: <Money cents={totals.limitCents} /> },
+    { label: 'Dépensé', value: <Money cents={totals.spentCents} />, sub: `${formatPercent(spentRatio)} du budget` },
+  ];
+  if (progress) {
+    stats.push({
+      label: 'Par jour',
+      value: perDayCents === null ? '-' : <Money cents={perDayCents} />,
+      sub: `${progress.daysLeft} jour${progress.daysLeft > 1 ? 's' : ''} restant${progress.daysLeft > 1 ? 's' : ''}`,
+    });
+  }
 
   return (
-    <Card size="3">
-      <Grid columns={{ initial: '2', md: '2fr 1fr 1fr 1fr' }} gap="4" align="start">
-        <Box gridColumn={{ initial: '1 / -1', md: 'auto' }}>
-          <Text as="div" size="2" color="gray">
-            {over ? 'Budgets dépassés de' : 'Reste à dépenser'}
-          </Text>
+    <HeroStrip
+      main={{
+        label: over ? 'Budgets dépassés de' : 'Reste à dépenser',
+        tone: over ? 'red' : 'accent',
+        value: (
           <Skeleton loading={loading}>
-            <Text as="div" size="8" weight="bold" color={over ? 'red' : undefined} style={{ letterSpacing: '-0.02em' }}>
-              <Money cents={Math.abs(totals.leftCents)} />
-            </Text>
+            <Money cents={Math.abs(totals.leftCents)} />
           </Skeleton>
-          <Text as="div" size="1" color="gray">
-            sur {budgetCount} budget{budgetCount > 1 ? 's' : ''}
-            {totals.overCount > 0 ? `, dont ${totals.overCount} dépassé${totals.overCount > 1 ? 's' : ''}` : ''}
-          </Text>
-        </Box>
-        <HeroStat label="Budgété">
-          <Money cents={totals.limitCents} />
-        </HeroStat>
-        <HeroStat label="Dépensé" sub={`${formatPercent(spentRatio)} du budget`}>
-          <Money cents={totals.spentCents} />
-        </HeroStat>
-        {progress && (
-          <HeroStat label="Par jour d'ici la fin du mois" sub={`${progress.daysLeft} jour${progress.daysLeft > 1 ? 's' : ''} restant${progress.daysLeft > 1 ? 's' : ''}`}>
-            {perDayCents === null ? '-' : <Money cents={perDayCents} />}
-          </HeroStat>
-        )}
-      </Grid>
-      <Box mt="4">
-        <BudgetBar spentCents={totals.spentCents} limitCents={totals.limitCents} todayRatio={progress?.ratio ?? null} label="Total des budgets" height={10} />
-        <Flex justify="between" mt="2" gap="3">
-          <Text size="1" color="gray">
-            {formatPercent(spentRatio)} dépensé
-          </Text>
-          {progress && (
+        ),
+        sub: `sur ${budgetCount} budget${budgetCount > 1 ? 's' : ''}${totals.overCount > 0 ? `, dont ${totals.overCount} dépassé${totals.overCount > 1 ? 's' : ''}` : ''}`,
+      }}
+      stats={stats}
+      footer={
+        <>
+          <BudgetBar spentCents={totals.spentCents} limitCents={totals.limitCents} todayRatio={progress?.ratio ?? null} label="Total des budgets" height={10} />
+          <Flex justify="between" mt="2" gap="3" wrap="wrap">
             <Text size="1" color="gray">
-              Trait = aujourd'hui, {formatPercent(progress.ratio)} du mois écoulé
+              {formatPercent(spentRatio)} dépensé
             </Text>
-          )}
-        </Flex>
-      </Box>
-    </Card>
+            {progress && (
+              <Text size="1" color="gray">
+                Trait = aujourd'hui, {formatPercent(progress.ratio)} du mois écoulé
+              </Text>
+            )}
+          </Flex>
+        </>
+      }
+    />
   );
 }
 
 function RemainingBadge({ leftCents, state }: { leftCents: number; state: BudgetState }) {
   return (
-    <Badge color={BUDGET_STATES[state].color} variant="soft" size="2">
+    <Badge color={BUDGET_STATES[state].badgeColor} variant="soft" size="2" radius="full" className="tabular">
       {leftCents < 0 ? (
         <>
           Dépassé de
@@ -303,7 +278,7 @@ function RemainingBadge({ leftCents, state }: { leftCents: number; state: Budget
 function GroupLabel({ state, count }: { state: BudgetState; count: number }) {
   return (
     <Flex align="center" gap="2">
-      <Box width="8px" height="8px" style={{ borderRadius: '9999px', background: `var(--${BUDGET_STATES[state].color}-9)` }} />
+      <Box width="8px" height="8px" style={{ borderRadius: '9999px', background: BUDGET_STATES[state].cssColor }} />
       <Text size="1" weight="medium" color="gray">
         {BUDGET_STATES[state].label} · {count}
       </Text>

@@ -9,7 +9,7 @@ import { AppRoutes } from './routes';
 export function App() {
   const appearance: 'light' | 'dark' = useColorScheme();
   return (
-    <Theme appearance={appearance} accentColor="indigo" grayColor="slate" radius="large">
+    <Theme appearance={appearance} accentColor="teal" grayColor="slate" radius="large">
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <AuthGate>
