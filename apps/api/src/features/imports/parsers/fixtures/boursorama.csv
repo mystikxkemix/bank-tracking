@@ -1,0 +1,5 @@
+dateOp;dateVal;label;category;categoryParent;supplierFound;amount;comment;accountNum;accountLabel;accountbalance
+2026-10-05;2026-10-05;"CARTE 03/10/26 CARREFOUR CB*1234";"Alimentation";"Vie quotidienne";"carrefour";-45,20;;00012345678;"BoursoBank";"1 523,40"
+2026-10-04;2026-10-04;"PRLV SEPA FREE MOBILE";"Téléphonie";"Abonnements";"free mobile";-15,99;;00012345678;"BoursoBank";"1 568,60"
+2026-10-02;2026-10-02;"VIR SEPA MADBOX SALAIRE";"Salaires";"Revenus";;"2 850,00";;00012345678;"BoursoBank";"1 584,59"
+2026-10-01;2026-10-01;"CARTE 30/09/26 SNCF CONNECT CB*1234";"Train";"Transports";"sncf";-112,00;"Billet Paris Lyon";00012345678;"BoursoBank";"-1 265,41"
