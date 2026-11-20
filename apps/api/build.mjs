@@ -1,4 +1,4 @@
-// Bundles the API and the shared package into a single CommonJS file for the release zip.
+// Bundles the API and the shared package into a single CommonJS file for the Docker image (see the root Dockerfile).
 import { build } from 'esbuild';
 
 await build({
