@@ -4,6 +4,7 @@ import { useContext, type CSSProperties } from 'react';
 import { Link as RouterLink, Outlet, useLocation, useNavigate } from 'react-router';
 import type { CurrentUser, Space } from '@bank/shared';
 import { useAuthStatus, useLogout } from '../features/auth/api';
+import { useHealth } from '../features/system/api';
 import { useSpaces } from '../features/spaces/api';
 import { SpaceSwitcher } from '../features/spaces/SpaceSwitcher';
 import { useTransactions } from '../features/transactions/api';
@@ -187,6 +188,7 @@ function UserMenu() {
   const user: CurrentUser | null | undefined = useAuthStatus().data?.user;
   const logout = useLogout();
   const navigate = useNavigate();
+  const version: string | undefined = useHealth().data?.version;
   if (!user) {
     return null;
   }
@@ -215,6 +217,13 @@ function UserMenu() {
         <DropdownMenu.Item color="red" onSelect={() => logout.mutate()}>
           Se déconnecter
         </DropdownMenu.Item>
+        {version && (
+          <Box px="3" pt="2" pb="1">
+            <Text as="div" size="1" color="gray" className="tabular">
+              Version {version}
+            </Text>
+          </Box>
+        )}
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   );

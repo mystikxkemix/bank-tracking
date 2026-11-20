@@ -20,6 +20,12 @@ const envSchema = z.object({
   SESSION_TTL_DAYS: z.coerce.number().int().min(1).default(30),
   /** true only when users reach the app over HTTPS (reverse proxy): secure cookie, HSTS, upgrade-insecure-requests. */
   HTTPS: z.stringbool().default(false),
+  /** Version shown in the UI: the image's 1.N tag, set by the Dockerfile from the CI build. */
+  APP_VERSION: z
+    .string()
+    .trim()
+    .default('dev')
+    .transform((value: string) => value || 'dev'),
   /** Folder holding the built web app. Only served when it exists (prod). */
   PUBLIC_DIR: z.string().default(path.resolve(process.cwd(), 'public')),
 });
