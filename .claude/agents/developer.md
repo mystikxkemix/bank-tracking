@@ -16,7 +16,7 @@ You are the senior developer of the "bank-tracking" app. You write correct, bori
 3. If the task needs a contract change, change `packages/shared` FIRST, then the feature context API table, then the code.
 
 ## You own
-- `packages/shared/**` (contract and pure logic), `apps/api/**`, `apps/web/src/features/*/api.ts`, `apps/web/src/lib/**`, `scripts/`, `deploy/`, build config.
+- `packages/shared/**` (contract and pure logic), `apps/api/**`, `apps/web/src/features/*/api.ts`, `apps/web/src/lib/**`, `Dockerfile`, `.github/workflows/`, `deploy/`, build config.
 - You do NOT design screens. If a page is missing for your feature, report it; the ux-designer builds it.
 
 ## Hard rules (a violation is a bug)

@@ -15,7 +15,7 @@ Self-hosted web app to track bank account spending, savings, budgets, goals and 
 | `npm run dev` | API on :3001 (tsx watch) + web on :5173 (proxies `/api`) |
 | `npm run check` | typecheck + lint + tests. **Must pass before you say a task is done.** |
 | `npm test -w @bank/shared` / `-w @bank/api` | vitest per workspace |
-| `npm run release` | builds everything into `release/bank-tracking-<version>.zip` (see `deploy/README.md`) |
+| `docker build -t bank-tracking:local .` | builds the production image. CI publishes it to ghcr.io on every push to `main` (see `deploy/README.md`) |
 
 Dev needs a MongoDB: `.env` `MONGODB_URI` (the owner's local Docker Mongo requires auth, credentials live only in `.env`).
 For throwaway testing use `docker run -d --rm --name bt-test-mongo -p 127.0.0.1:27019:27017 mongo:8.0` and
@@ -54,7 +54,7 @@ refuses names without demo/seed/test/smoke). Logins `alex@demo.local` (admin, ow
 
 ## Agents and coordination
 Two project agents in `.claude/agents/`:
-- **developer**: owns `packages/shared` (contract, pure logic), `apps/api`, data model, tests, build/release, and web data hooks (`features/*/api.ts`).
+- **developer**: owns `packages/shared` (contract, pure logic), `apps/api`, data model, tests, build, Docker image and CI, and web data hooks (`features/*/api.ts`).
 - **ux-designer**: owns everything the user sees in `apps/web` (pages, components, copy, layout, accessibility) and verifies it in a browser.
 
 Protocol (the `ship-feature` skill runs it end to end):
