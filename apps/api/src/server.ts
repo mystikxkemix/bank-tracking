@@ -11,7 +11,7 @@ async function main(): Promise<void> {
   }
 
   const server: Server = createApp().listen(config.PORT, () => {
-    console.log(`[api] listening on http://localhost:${config.PORT} (db: ${config.MONGODB_DB})`);
+    console.log(`[api] ${config.APP_VERSION} listening on http://localhost:${config.PORT} (db: ${config.MONGODB_DB})`);
   });
 
   const shutdown = (): void => {

@@ -3,6 +3,7 @@ import path from 'node:path';
 import cookieParser from 'cookie-parser';
 import express, { type Express, type Request, type Response } from 'express';
 import helmet from 'helmet';
+import type { Health } from '@bank/shared';
 import { config } from './config';
 import { features } from './features';
 import { requireAuth } from './features/auth/routes';
@@ -24,7 +25,8 @@ export function createApp(): Express {
   app.use(cookieParser());
 
   app.get('/api/health', (_req: Request, res: Response) => {
-    res.json({ ok: true });
+    const health: Health = { ok: true, version: config.APP_VERSION };
+    res.json(health);
   });
 
   for (const feature of features) {

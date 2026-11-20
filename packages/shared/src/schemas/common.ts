@@ -24,6 +24,14 @@ export const COLORS = [
 export const colorSchema = z.enum(COLORS);
 export type Color = z.infer<typeof colorSchema>;
 
+/** GET /api/health: liveness probe for the Docker healthcheck, plus the running version shown in the UI. */
+export const healthSchema = z.object({
+  ok: z.literal(true),
+  /** Image version, e.g. "1.7" (the CI tag); "dev" outside a CI build. */
+  version: z.string(),
+});
+export type Health = z.infer<typeof healthSchema>;
+
 /** Error payload returned by every failing API call. */
 export const apiErrorSchema = z.object({
   error: z.object({
