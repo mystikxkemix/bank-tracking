@@ -6,7 +6,7 @@ COPY . .
 RUN npm ci --include=dev --no-fund --no-audit && npm run build
 
 FROM node:22-alpine
-# Version of the image, e.g. 1.12 (set by CI; "dev" for local builds).
+# Version of the image, e.g. 2.12 (set by CI; "dev" for local builds).
 ARG VERSION=dev
 ENV APP_VERSION=$VERSION \
     NODE_ENV=production \

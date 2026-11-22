@@ -5,10 +5,10 @@ depuis le store perso [zimaos-appstore](https://github.com/mystikxkemix/zimaos-a
 
 ## Comment une version arrive sur ZimaOS
 1. Push sur `main` : la CI (`.github/workflows/ci.yml`) lance `npm run check`.
-2. Si tout passe, elle publie `ghcr.io/mystikxkemix/bank-tracking` avec les tags `1.N`
-   (N = nombre de commits sur `main`), `latest` et `sha-<commit>`.
-3. Le workflow "Publish store" du store (toutes les heures) voit le nouveau tag `1.N`,
-   met à jour `Apps/bank-tracking/docker-compose.yml` (image et version `1.N.0`) et republie le store.
+2. Si tout passe, elle publie `ghcr.io/mystikxkemix/bank-tracking` avec les tags `2.N`
+   (N = nombre de merges (ou de push) sur `main`, +1 par PR mergée), `latest` et `sha-<commit>`.
+3. Le workflow "Publish store" du store (toutes les heures) voit le nouveau tag `2.N`,
+   met à jour `Apps/bank-tracking/docker-compose.yml` (image et version `2.N.0`) et republie le store.
 4. ZimaOS propose la mise à jour de l'app.
 
 Le package ghcr.io doit rester public : ZimaOS et le store le lisent sans login.
